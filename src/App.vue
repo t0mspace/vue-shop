@@ -5,10 +5,18 @@ import AppShop from './components/Shop/AppShop.vue'
 import AppCart from './components/Cart/AppCart.vue'
 import data from './data/product'
 import { computed, ref } from 'vue'
-import type { ProductCartInterface, ProductInterface } from './interfaces'
+import type { FiltersInterface, ProductCartInterface, ProductInterface } from './interfaces'
+import { DEFAULT_FILTERS } from '@/data/filters.ts'
 
-const products = ref<ProductInterface[]>(data)
-const cart = ref<ProductCartInterface[]>([])
+const state = ref<{
+  products: ProductInterface[],
+  cart: ProductCartInterface[],
+  filters: FiltersInterface
+}>({
+  products: data,
+  cart: [],
+  filters: DEFAULT_FILTERS
+})
 
 function addProductToCart(productId: number): void {
   const product = products.value.find((product) => product.id === productId)
