@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ProductCartInterface } from '@/interfaces'
-import AppCartProduct from './AppCartProduct.vue'
+import CartProduct from './CartProduct.vue'
 
 defineProps<{
   cart: ProductCartInterface[]
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="d-flex flex-column">
-    <AppCartProduct
+    <CartProduct
       v-for="product of cart"
       :product="product"
       @remove-product-from-cart="emit('removeProductFromCart', $event)"

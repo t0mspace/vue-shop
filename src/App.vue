@@ -1,47 +1,83 @@
 <script setup lang="ts">
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
-import AppShop from './components/Shop/AppShop.vue'
-import AppCart from './components/Cart/AppCart.vue'
-import data from './data/product'
-import { computed, ref } from 'vue'
-import type { FiltersInterface, ProductCartInterface, ProductInterface } from './interfaces'
-import { DEFAULT_FILTERS } from '@/data/filters.ts'
+import TheHeader from './components/Header.vue';
+import TheFooter from './components/Footer.vue';
+import Shop from './components/Shop/Shop.vue';
+import Cart from './components/Cart/Cart.vue';
+import data from './data/product';
+import { computed, reactive } from 'vue';
+import type {
+  FiltersInterface,
+  ProductCartInterface,
+  ProductInterface,
+} from './interfaces';
+import { DEFAULT_FILTERS } from './data/filters';
 
-const state = ref<{
-  products: ProductInterface[],
-  cart: ProductCartInterface[],
-  filters: FiltersInterface
+const state = reactive<{
+  products: ProductInterface[];
+  cart: ProductCartInterface[];
+  filters: FiltersInterface;
 }>({
   products: data,
   cart: [],
-  filters: DEFAULT_FILTERS
-})
+  filters: { ...DEFAULT_FILTERS },
+});
 
 function addProductToCart(productId: number): void {
-  const product = products.value.find((product) => product.id === productId)
+  const product = state.products.find((product) => product.id === productId);
   if (product) {
-    const productInCart = cart.value.find((product) => product.id === productId)
+    const productInCart = state.cart.find(
+      (product) => product.id === productId
+    );
     if (productInCart) {
-      productInCart.quantity++
+      productInCart.quantity++;
     } else {
-      cart.value.push({ ...product, quantity: 1 })
+      state.cart.push({ ...product, quantity: 1 });
     }
   }
 }
 
 function removeProductFromCart(productId: number): void {
-  const productFromCart = cart.value.find((product) => product.id === productId)
-  if (productFromCart) {
-    if (productFromCart.quantity === 1) {
-      cart.value = cart.value.filter((product) => product.id !== productId)
-    } else {
-      productFromCart.quantity--
-    }
+  const productFromCart = state.cart.find(
+    (product) => product.id === productId
+  );
+  if (productFromCart?.quantity === 1) {
+    state.cart = state.cart.filter((product) => product.id !== productId);
+  } else {
+    productFromCart.quantity--;
   }
 }
 
-const cartEmpty = computed(() => cart.value.length === 0)
+function updateFilter(filterUpdate: FilterUpdate) {
+  if (filterUpdate.search !== undefined) {
+    state.filters.search = filterUpdate.search;
+  } else if (filterUpdate.priceRange) {
+    state.filters.priceRange = filterUpdate.priceRange;
+  } else if (filterUpdate.category) {
+    state.filters.category = filterUpdate.category;
+  } else {
+    state.filters = { ...DEFAULT_FILTERS };
+  }
+}
+
+const cartEmpty = computed(() => state.cart.length === 0);
+
+const filteredProducts = computed(() => {
+  return state.products.filter((product) => {
+    if (
+      product.title
+        .toLocaleLowerCase()
+        .startsWith(state.filters.search.toLocaleLowerCase()) &&
+      product.price >= state.filters.priceRange[0] &&
+      product.price <= state.filters.priceRange[1] &&
+      (product.category === state.filters.category ||
+        state.filters.category === 'all')
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+});
 </script>
 
 <template>
@@ -51,21 +87,26 @@ const cartEmpty = computed(() => cart.value.length === 0)
       gridEmpty: cartEmpty,
     }"
   >
-    <AppHeader class="header" />
-    <AppShop :products="products" @add-product-to-cart="addProductToCart" class="shop" />
-    <AppCart
+    <TheHeader class="header" />
+    <Shop
+      @update-filter="updateFilter"
+      :products="filteredProducts"
+      @add-product-to-cart="addProductToCart"
+      class="shop"
+    />
+    <Cart
       v-if="!cartEmpty"
-      :cart="cart"
+      :cart="state.cart"
       class="cart"
       @remove-product-from-cart="removeProductFromCart"
     />
-    <AppFooter class="footer" />
+    <TheFooter class="footer" />
   </div>
 </template>
 
 <style lang="scss">
-@use './assets/scss/base.scss' as *;
-@use './assets/scss/debug.scss' as *;
+@use './assets/scss/base.scss';
+@use './assets/scss/debug.scss';
 
 .app-container {
   min-height: 100vh;

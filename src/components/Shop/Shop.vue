@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ProductInterface } from '@/interfaces'
-import AppShopProduct from './AppShopProduct.vue'
+import ShopProductList from './ShopProductList.vue'
 
 defineProps<{
   products: ProductInterface[]
@@ -12,21 +12,12 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="grid p-20">
-    <AppShopProduct
+  <div>
+    <ShopProductList
       @add-product-to-cart="emit('addProductToCart', $event)"
-      v-for="product of products"
-      :product="product"
-      :key="product.id"
+      :products="products"
     />
   </div>
 </template>
 
-<style lang="scss" scoped>
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-auto-rows: 400px;
-  gap: 20px;
-}
-</style>
+<style lang="scss" scoped></style>
