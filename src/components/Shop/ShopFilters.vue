@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FiltersInterface } from '@/interfaces'
+import type { Category, FiltersInterface } from '@/interfaces'
 import type { FilterUpdate } from '@/data/filters.ts'
 
 defineProps<{
@@ -49,8 +49,8 @@ const emit = defineEmits<{
     </section>
     <section>
       <h3>Trier par catégorie</h3>
-      <div class="mb-5" v-for="category in ['gamer', 'desktop'] as string[]">
-        <label :for="category"> {{ category }}} </label>
+      <div class="mb-5" v-for="category in ['all', 'streaming', 'gamer', 'pro'] as Category[]">
+        <label :for="category"> {{ category }} </label>
         <input
           type="radio"
           @input="$emit('updateFilter', { category })"
@@ -60,6 +60,7 @@ const emit = defineEmits<{
         />
       </div>
     </section>
+    <button class="btn btn-danger" @click="emit('updateFilter', {})">Reset filters</button>
   </div>
 </template>
 

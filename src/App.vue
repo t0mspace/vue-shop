@@ -1,83 +1,77 @@
 <script setup lang="ts">
-import TheHeader from './components/Header.vue';
-import TheFooter from './components/Footer.vue';
-import Shop from './components/Shop/Shop.vue';
-import Cart from './components/Cart/Cart.vue';
-import data from './data/product';
-import { computed, reactive } from 'vue';
-import type {
-  FiltersInterface,
-  ProductCartInterface,
-  ProductInterface,
-} from './interfaces';
+import TheHeader from './components/Header.vue'
+import TheFooter from './components/Footer.vue'
+import Shop from './components/Shop/Shop.vue'
+import Cart from './components/Cart/Cart.vue'
+import data from './data/product'
+import { computed, reactive } from 'vue'
+import type { FiltersInterface, ProductCartInterface, ProductInterface } from './interfaces'
 import { DEFAULT_FILTERS, type FilterUpdate } from './data/filters'
 
 const state = reactive<{
-  products: ProductInterface[];
-  cart: ProductCartInterface[];
-  filters: FiltersInterface;
+  products: ProductInterface[]
+  cart: ProductCartInterface[]
+  filters: FiltersInterface
 }>({
   products: data,
   cart: [],
   filters: { ...DEFAULT_FILTERS },
-});
+})
 
 function addProductToCart(productId: number): void {
-  const product = state.products.find((product) => product.id === productId);
+  const product = state.products.find((product) => product.id === productId)
   if (product) {
-    const productInCart = state.cart.find(
-      (product) => product.id === productId
-    );
+    const productInCart = state.cart.find((product) => product.id === productId)
     if (productInCart) {
-      productInCart.quantity++;
+      productInCart.quantity++
     } else {
-      state.cart.push({ ...product, quantity: 1 });
+      state.cart.push({ ...product, quantity: 1 })
     }
   }
 }
 
 function removeProductFromCart(productId: number): void {
-  const productFromCart = state.cart.find(
-    (product) => product.id === productId
-  );
+  const productFromCart = state.cart.find((product) => product.id === productId)
   if (productFromCart?.quantity === 1) {
-    state.cart = state.cart.filter((product) => product.id !== productId);
+    state.cart = state.cart.filter((product) => product.id !== productId)
   } else {
-    productFromCart.quantity--;
+    productFromCart.quantity--
   }
 }
 
 function updateFilter(filterUpdate: FilterUpdate) {
   if (filterUpdate.search !== undefined) {
-    state.filters.search = filterUpdate.search;
+    state.filters.search = filterUpdate.search
   } else if (filterUpdate.priceRange) {
-    state.filters.priceRange = filterUpdate.priceRange;
+    state.filters.priceRange = filterUpdate.priceRange
   } else if (filterUpdate.category) {
-    state.filters.category = filterUpdate.category;
+    state.filters.category = filterUpdate.category
   } else {
-    state.filters = { ...DEFAULT_FILTERS };
+    //reset filters
+    resetFilters()
   }
 }
 
-const cartEmpty = computed(() => state.cart.length === 0);
+function resetFilters(): void {
+  state.filters = { ...DEFAULT_FILTERS }
+}
+
+const cartEmpty = computed(() => state.cart.length === 0)
 
 const filteredProducts = computed(() => {
   return state.products.filter((product) => {
     if (
-      product.title
-        .toLocaleLowerCase()
-        .startsWith(state.filters.search.toLocaleLowerCase()) &&
+      product.title.toLocaleLowerCase().startsWith(state.filters.search.toLocaleLowerCase()) &&
       product.price >= state.filters.priceRange[0] &&
       product.price <= state.filters.priceRange[1] &&
-      (product.category === state.filters.category ||
-        state.filters.category === 'all')
+      (product.category === state.filters.category || state.filters.category === 'all')
     ) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
-  });
-});
+  })
+})
 </script>
 
 <template>
