@@ -10,7 +10,7 @@ import type {
   ProductCartInterface,
   ProductInterface,
 } from './interfaces';
-import { DEFAULT_FILTERS } from './data/filters';
+import { DEFAULT_FILTERS, type FilterUpdate } from './data/filters'
 
 const state = reactive<{
   products: ProductInterface[];
@@ -91,6 +91,7 @@ const filteredProducts = computed(() => {
     <Shop
       @update-filter="updateFilter"
       :products="filteredProducts"
+      :filters="state.filters"
       @add-product-to-cart="addProductToCart"
       class="shop"
     />
