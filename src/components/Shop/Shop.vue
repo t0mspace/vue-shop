@@ -5,7 +5,7 @@ import type { FilterUpdate } from '@/data/filters.ts'
 import ShopFilters from '@/components/Shop/ShopFilters.vue'
 
 defineProps<{
-  products: ProductInterface[],
+  products: ProductInterface[]
   filters: FiltersInterface
 }>()
 
@@ -17,7 +17,12 @@ const emit = defineEmits<{
 
 <template>
   <div class="d-flex flex-row">
-    <ShopFilters :filters="filters" @updateFilter="emit('updateFilter',$event)" class="shop-filters" />
+    <ShopFilters
+      :nbr-of-products="products.length"
+      :filters="filters"
+      @updateFilter="emit('updateFilter', $event)"
+      class="shop-filters"
+    />
     <ShopProductList
       :filters="filters"
       @add-product-to-cart="emit('addProductToCart', $event)"

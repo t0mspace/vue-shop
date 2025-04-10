@@ -4,6 +4,7 @@ import type { FilterUpdate } from '@/data/filters.ts'
 
 defineProps<{
   filters: FiltersInterface
+  nbrOfProducts: number
 }>()
 
 const emit = defineEmits<{
@@ -60,6 +61,7 @@ const emit = defineEmits<{
         />
       </div>
     </section>
+    <small>Result: {{ nbrOfProducts }}</small>
     <button class="btn btn-danger" @click="emit('updateFilter', {})">Reset filters</button>
   </div>
 </template>
