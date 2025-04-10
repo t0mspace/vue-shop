@@ -23,7 +23,7 @@ const emit = defineEmits<{
       />
     </section>
     <section>
-      Choisir la fourchette des prix
+      <h3>Choisir la fourchette des prix</h3>
       <div
         class="mb-5"
         v-for="(priceRange, index) in [
@@ -44,6 +44,19 @@ const emit = defineEmits<{
           name="priceRange"
           :id="`${priceRange[0]}-${priceRange[1]}`"
           :value="`${priceRange[0]}-${priceRange[1]}`"
+        />
+      </div>
+    </section>
+    <section>
+      <h3>Trier par catégorie</h3>
+      <div class="mb-5" v-for="category in ['gamer', 'desktop'] as string[]">
+        <label :for="category"> {{ category }}} </label>
+        <input
+          type="radio"
+          @input="$emit('updateFilter', { category })"
+          name="category"
+          :id="`${category}`"
+          :value="`${category}`"
         />
       </div>
     </section>
