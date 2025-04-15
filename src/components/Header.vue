@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { Page } from '@/interfaces/types.ts'
+
+defineProps<{
+  page: Page
+}>()
+
+const emit = defineEmits<{
+  e: 'navigate'
+  page: Page
+}>()
+</script>
 
 <template>
   <header class="px-20 d-flex flex-row align-items-center">
@@ -8,10 +19,10 @@
     </a>
     <ul class="d-flex flex-row flex-fill">
       <li class="mr-10">
-        <a href="#">Boutique</a>
+        <a href="#" @click="emit('navigate', 'Shop')">Boutique</a>
       </li>
       <li>
-        <a href="#">Admin</a>
+        <a href="#" @click="emit('navigate', 'Admin')">Admin</a>
       </li>
     </ul>
     <ul class="d-flex flex-row">

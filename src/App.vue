@@ -6,18 +6,22 @@ import type { Page } from '@/interfaces/types.ts'
 import Shop from '@/features/shop/Shop.vue'
 import Admin from '@/features/admin/Admin.vue'
 
-const states = reactive<{ page: Page }>({ page: 'Shop' })
+const state = reactive<{ page: Page }>({ page: 'Shop' })
 
 const pages: { [s: string]: C } = {
   Shop,
   Admin,
 }
+
+const navigate = (page: string) => {
+  state.page = page
+}
 </script>
 
 <template>
   <div class="app-container">
-    <TheHeader class="header" />
-    <div class="app-content"><Component :is="pages[states.page]" /></div>
+    <TheHeader @navigate="navigate" class="header" :page="state.page" />
+    <div class="app-content"><Component :is="pages[state.page]" /></div>
     <TheFooter class="footer" />
   </div>
 </template>

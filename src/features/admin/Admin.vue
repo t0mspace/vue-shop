@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
-<template></template>
+<template>
+  <h2>Admin</h2>
+</template>
 
 <style scoped lang="scss"></style>
