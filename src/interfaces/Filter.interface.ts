@@ -1,4 +1,4 @@
-export type Category = 'gamer' | 'pro' | 'streaming' | 'all'
+import type { Category } from '@/interfaces/types.ts'
 
 export interface FiltersInterface {
   search: string

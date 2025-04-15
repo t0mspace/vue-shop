@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { FiltersInterface, ProductInterface } from '@/interfaces'
 import ShopProductList from './ShopProductList.vue'
-import type { FilterUpdate } from '@/data/filters.ts'
-import ShopFilters from '@/components/Shop/ShopFilters.vue'
+import type { FilterUpdate } from '@/features/shop/datas/filters.ts'
+import ShopFilters from '@/features/shop/components/Shop/ShopFilters.vue'
 
 defineProps<{
   products: ProductInterface[]
