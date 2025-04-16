@@ -12,6 +12,7 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'addProductToCart', productId: number): void
   (e: 'updateFilter', updateFilter: FilterUpdate): void
+  (e: 'loadMoreProduct'): void
 }>()
 </script>
 
@@ -27,6 +28,7 @@ const emit = defineEmits<{
       :filters="filters"
       @add-product-to-cart="emit('addProductToCart', $event)"
       @update-filter="emit('updateFilter', $event)"
+      @loadMoreProduct="emit('loadMoreProduct')"
       :products="products"
     />
   </div>

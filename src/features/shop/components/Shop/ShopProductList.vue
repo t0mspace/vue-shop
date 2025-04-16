@@ -8,6 +8,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'addProductToCart', productId: number): void
+  (e: 'loadMoreProduct'): void
 }>()
 </script>
 
@@ -20,6 +21,7 @@ const emit = defineEmits<{
       :key="product.id"
     />
   </div>
+  <button type="button" @click="emit('loadMoreProduct', $event)">Charger plus de choix</button>
 </template>
 
 <style lang="scss" scoped>

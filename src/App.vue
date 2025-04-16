@@ -21,7 +21,11 @@ const navigate = (page: string) => {
 <template>
   <div class="app-container">
     <TheHeader @navigate="navigate" class="header" :page="state.page" />
-    <div class="app-content"><Component :is="pages[state.page]" /></div>
+    <div class="app-content">
+      <Suspense>
+        <Component :is="pages[state.page]" />
+      </Suspense>
+    </div>
     <TheFooter class="footer" />
   </div>
 </template>

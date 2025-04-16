@@ -2,7 +2,7 @@
 import Shop from './components/Shop/Shop.vue'
 import Cart from './components/Cart/Cart.vue'
 import data from '../../data/product'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type {
   FiltersInterface,
   ProductCartInterface,
@@ -10,18 +10,30 @@ import type {
   FilterUpdate,
 } from '@/interfaces'
 import { DEFAULT_FILTERS } from './datas/filters.ts'
+import { seed } from '@/features/shop/datas/seeds.ts'
+import Product from '../../data/product'
+import product from '../../data/product'
+
+//seed('totoleherosproduct')
 
 const state = reactive<{
   products: ProductInterface[]
   cart: ProductCartInterface[]
   filters: FiltersInterface
 }>({
-  products: data,
+  products: [],
   cart: [],
   filters: { ...DEFAULT_FILTERS },
 })
 
-// seed('projetproducts'); N’oubliez pas de commenter !
+const products = await (await fetch('https://restapi.fr/api/totoleherosproduct')).json()
+if (Array.isArray(products)) {
+  state.products = products
+} else {
+  state.products = [products]
+}
+
+//seed('vuejs3totoleheros')
 
 function addProductToCart(productId: number): void {
   const product = state.products.find((product) => product.id === productId)
