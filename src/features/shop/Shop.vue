@@ -21,6 +21,8 @@ const state = reactive<{
   filters: { ...DEFAULT_FILTERS },
 })
 
+// seed('projetproducts'); N’oubliez pas de commenter !
+
 function addProductToCart(productId: number): void {
   const product = state.products.find((product) => product.id === productId)
   if (product) {
